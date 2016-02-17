@@ -2,7 +2,11 @@
   "name": "ecommerce-example",
   "version": "0.0.1",
   "description": "An example of a ecommerce website with google analytics enhanced commerce implementation",
-  "author": "Your Name <you.name@example.org>",
+  "author": "Thomas Büchi Sagredo <thombuchi@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thombuchi/ga-enhanced-ecommerce"
+  },
   "scripts": {
     "start": "node server.js"
   },
@@ -12,5 +16,9 @@
     "node",
     "express"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.4",
+    "express-handlebars": "^3.0.0"
+  }
 }
