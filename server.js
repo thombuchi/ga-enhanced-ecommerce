@@ -1,6 +1,7 @@
 var express 		= require('express');
 var hbs  			= require('express-handlebars');
-var bodyParser 		= require('body-parser')
+var bodyParser 		= require('body-parser');
+var analytics 		= require('./config').analytics;
 var app 			= express();
 var user 			= {};
 user.cart 			= {};
@@ -37,6 +38,12 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   	extended: true
 }));
 
+app.use(function(req, res, next) {
+
+	res.locals.analytics = analytics;
+	next();
+})
+
 
 //generate 40 products and assigned them to a category
 //product generation
@@ -46,6 +53,8 @@ for(var i = 0; i < 40; i++) {
 	product.name = 'Product ' + (i + 1);
 	product.price = 100 % ((i + 5)*3);
 	product.category = 2 - (i % 2);
+	product.brand = 'Example';
+	product.category = 'NodeJS';
 	products.push(product);
 }
 
@@ -80,7 +89,10 @@ app.post('/product/addToCart', function(req, res) {
 
 //home
 app.get('/', function (req, res) {
-  	res.render('index', {products:products.slice(0,4)});
+	var data = {};
+	data.analytics = res.locals.analytics;
+	data.products = products.slice(0,4);
+  	res.render('index', data);
 });
 
 //categories
@@ -90,7 +102,11 @@ app.get('/category/:id', function(req, res) {
 		return p.category == id;
 	});
 
-	res.render('category', {category: {id: id}, products: c_products});
+	var data = {};
+	data.analytics = res.locals.analytics;
+	data.category = {id: id};
+	data.products = c_products;
+	res.render('category', data);
 });
 
 //product
@@ -98,19 +114,29 @@ app.get('/product/:id', function(req, res) {
 	var id = req.params.id;
 	var p_products = products.filter(function(p) {
 		return p.id== id;
-	});
-
-	res.render('product', {product: p_products[0]});
+	})[0];
+	var data = {};
+	data.analytics = res.locals.analytics;
+	data.product = p_products;
+	res.render('product', data);
 });
 
 //shopping cart
 app.get('/cart', function(req, res) {
-	res.render('cart', {total: user.cart.total, products: req.user.cart.products});
+	var data = {};
+	data.analytics = res.locals.analytics;
+	data.total = req.user.cart.total;
+	data.products = req.user.cart.products;
+	res.render('cart', data);
 })
 
 //shipping
 app.get('/checkout/shipping', function(req, res) {
-	res.render('shipping', {total: user.cart.total, products: req.user.cart.products});
+	var data = {};
+	data.analytics = res.locals.analytics;
+	data.total = req.user.cart.total;
+	data.products = req.user.cart.products;
+	res.render('shipping', data);
 })
 
 //payment
@@ -128,7 +154,13 @@ app.post('/checkout/payment', function(req, res) {
 	}
 	total += user.cart.shipping.price;
 	user.cart.total = total;
-	res.render('payment', {total: user.cart.total, products: req.user.cart.products, shipping: user.cart.shipping});
+
+	var data = {};
+	data.analytics = res.locals.analytics;
+	data.total = user.cart.total;
+	data.products = req.user.cart.products;
+	data.shipping = user.cart.shipping;
+	res.render('payment', data);
 })
 
 //confirmation
@@ -151,7 +183,13 @@ app.post('/checkout/summary', function(req, res) {
 	user.cart 			= {};
 	user.cart.products 	= [];
 	user.cart.total 	= 0;
-	res.render('summary', {total: purchase.total, products: purchase.products, shipping: purchase.shipping, payment: purchase.payment});
+	var data = {};
+	data.analytics = res.locals.analytics;
+	data.total = purchase.total;
+	data.products = purchase.products;
+	data.shipping = purchase.shipping;
+	data.payment = purchase.payment;
+	res.render('summary', data);
 })
 
 

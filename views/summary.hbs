@@ -32,3 +32,26 @@
   </tbody>
 </table>
 </section>
+
+<script>
+{{#each products}}
+ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+  'id': '{{this.id}}',                   // Product ID (string).
+  'name': '{{this.name}}', // Product name (string).
+  'category': '{{this.category}}',            // Product category (string).
+  'brand': '{{this.brand}}',                // Product brand (string).
+  'variant': '',               // Product variant (string).
+  'price': '{{this.price}}',                 // Product price (currency).
+  'coupon': '',          // Product coupon (string).
+  'quantity': 1                     // Product quantity (number).
+});
+{{/each}}
+ga('ec:setAction', 'purchase', {          // Transaction details are provided in an actionFieldObject.
+  'id': (new Date().getTime()).toString(),                         // (Required) Transaction id (string).
+  'affiliation': 'Example Store', // Affiliation (string).
+  'revenue': '{{total}}',                     // Revenue (currency).
+  'tax': '0',                          // Tax (currency).
+  'shipping': '{{shipping.price}}',                     // Shipping (currency).
+  'coupon': ''                  // Transaction coupon (string).
+});
+</script>

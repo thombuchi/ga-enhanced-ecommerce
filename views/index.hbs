@@ -1,5 +1,5 @@
 <section class="hero is-info is-large">
-	<a href="/product/10">
+	<a href="/product/10" ga-type="promotion" ga-promo-id='HOME_BANNER_1' ga-promo-name="Banner 1" ga-promo-creative="banner_1_2x3" ga-promo-position="home_1">
 	<div class="hero-content">
 		
 	    <div class="container">
@@ -19,7 +19,7 @@
  	 <div class="container">
  	 	<div class="columns">
 		  	<div class="column" style="text-align: center;">
-		  		<a href="/category/1">
+		  		<a href="/category/1" ga-type="promotion" ga-promo-id='HOME_BANNER_2' ga-promo-name="Banner 2" ga-promo-creative="banner_2_2x3" ga-promo-position="home_2">
 		  		<div class="notification is-success" style="padding: 80px 0;">
 		  			<h2 class="title is-4">
 		    			Banner 2
@@ -29,7 +29,7 @@
 		    	</a>
 			</div>
 			<div class="column is-text-centered" style="text-align: center;">
-				<a href="/product/3">
+				<a href="/product/3" ga-type="promotion" ga-promo-id='HOME_BANNER_3' ga-promo-name="Banner 3" ga-promo-creative="banner_3_2x3" ga-promo-position="home_3">
 			   	<div class="notification is-danger" style="padding: 80px 0;">
 		  			<h2 class="title is-4">
 		    			Banner 3
@@ -39,7 +39,7 @@
 		    	</a>
 			</div>
 			<div class="column is-text-centered" style="text-align: center;">
-				<a href="/category/2">
+				<a href="/category/2" ga-type="promotion" ga-promo-id='HOME_BANNER_4' ga-promo-name="Banner 4" ga-promo-creative="banner_4_2x3" ga-promo-position="home_4">
 			    <div class="notification is-warning" style="padding: 80px 0;">
 		  			<h2 class="title is-4">
 		    			Banner 4
@@ -76,3 +76,53 @@
 		</div>
 	</div>
 </section>
+<!-- GA Banner Impressions -->
+<script>
+ga('ec:addPromo', {
+  'id': 'HOME_BANNER_1',
+  'name': 'Banner 1',
+  'creative': 'banner_1_2x3',
+  'position': 'home_1'
+});
+ga('ec:addPromo', {
+  'id': 'HOME_BANNER_2',
+  'name': 'Banner 2',
+  'creative': 'banner_2_2x3',
+  'position': 'home_2'
+});
+ga('ec:addPromo', {
+  'id': 'HOME_BANNER_3',
+  'name': 'Banner 3',
+  'creative': 'banner_3_2x3',
+  'position': 'home_3'
+});
+ga('ec:addPromo', {
+  'id': 'HOME_BANNER_4',
+  'name': 'Banner 4',
+  'creative': 'banner_4_2x3',
+  'position': 'home_4'
+});
+
+$("a[ga-type='promotion']").click(function(e) {
+
+	e.preventDefault();
+	if($(e.target).attr('ga-type') == undefined)
+		var element = $(e.target).closest('a');
+	else 
+		var element = $(e.target);
+	console.log(element);
+	var aux = {
+		id: element.attr('ga-promo-id'),
+		name: element.attr('ga-promo-name'),
+		creative: element.attr('ga-promo-creative'),
+		position: element.attr('ga-promo-position')
+	}
+	console.log(aux);
+	ga('ec:addPromo', aux);
+	ga('ec:setAction', 'promo_click');
+	ga('send', 'event', 'Internal Promotions', 'click', element.attr('ga-promo-name'),0, {'hitCallback': function(){
+		document.location = element.attr('href');
+	}});
+});
+
+</script>
