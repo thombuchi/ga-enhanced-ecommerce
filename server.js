@@ -54,7 +54,7 @@ for(var i = 0; i < 40; i++) {
 	product.price = 100 % ((i + 5)*3);
 	product.category = 2 - (i % 2);
 	product.brand = 'Example';
-	product.category = 'NodeJS';
+	product.category2 = 'NodeJS';
 	products.push(product);
 }
 
