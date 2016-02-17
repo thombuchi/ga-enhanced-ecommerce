@@ -1,4 +1,7 @@
-<table class="table">
+<section class="section">
+	<h3 class="title is-3">Purchase Summary</h3>
+	<p> Thanks for your purchase! </p>
+	<table class="table">
   <thead>
     <tr>
       <th>Product</th>
@@ -18,11 +21,14 @@
       <td>$ {{this.price}}</td>
     </tr>
     {{/each}}
+    <tr>
+      <td>{{shipping.name}}</td>
+      <td>$ {{shipping.price}}</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>{{payment.name}}</td>
+    </tr>
   </tbody>
 </table>
-
-<div class="columns">
-  <div class="column is-4 is-offset-8">
-  <a href="/checkout/shipping" class="button is-danger" style="width:100%;">Checkout</a>
-</div>
-</div>
+</section>

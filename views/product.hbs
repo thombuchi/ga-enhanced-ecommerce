@@ -6,17 +6,27 @@
 		<h1 class="title">{{product.name}}</h1>
 		<p class="title is-3" style="color: red;">$ {{product.price}}</p>
 		<button id="add" target="{{product.id}}" class="button" style="width: 100%; margin: 10px;">Add To Bag</button>
-		<button id="buy" class="button is-danger" style="width: 100%; margin: 10px;">Buy</button>
+		<button id="buy" target="{{product.id}}" class="button is-danger" style="width: 100%; margin: 10px;">Buy</button>
 	</div>
 </section>
 
 <script>
 	$(document).ready(function(){
-		$('#add').click(function() {
-			var id = $('#add').attr('target');
+		$('#add').click(function(e) {
+			var id = $(e.target).attr('target');
 			$.post('/product/addToCart', {id: id}).done(function(response){
-				console.log(response);
+				if(response.added){
+					alert('Product Added.');
+				}
 			})
-		})
+		});
+		$('#buy').click(function(e) {
+			var id = $(e.target).attr('target');
+			$.post('/product/addToCart', {id: id}).done(function(response){
+				if(response.added){
+					document.location = '/cart';
+				}
+			})
+		});
 	})
 </script>

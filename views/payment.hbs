@@ -1,0 +1,43 @@
+
+<form class="section columns" action="/checkout/summary" method="POST">
+	<div class="column is-6" style="text-align: center;">
+		<h3 class="title is-3">Payment Method</h3>
+<p class="control" style="text-align:center;">
+    <span class="select">
+        <select name="shipping">
+            <option value="1">Visa</option>
+            <option value="2">American Express</option>
+        </select>
+    </span>
+</p>
+</div>
+	<div class="column is-6">
+		<table class="table">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <th>Total</th>
+      <th>$ {{total}}</th>
+    </tr>
+  </tfoot>
+  <tbody>
+    {{#each products}}
+    <tr>
+      <td>{{this.name}}</td>
+      <td>$ {{this.price}}</td>
+    </tr>
+    {{/each}}
+    <tr>
+      <td>{{shipping.name}}</td>
+      <td>$ {{shipping.price}}</td>
+    </tr>
+  </tbody>
+</table>
+<button type="submit" class="button is-danger">Confirm and Pay</button>
+	</div>
+</form>

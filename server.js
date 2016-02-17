@@ -1,11 +1,18 @@
-var express 	= require('express');
-var hbs  		= require('express-handlebars');
-var bodyParser 	= require('body-parser')
-var app 		= express();
-var user 		= {};
-user.cart 		= [];
-var products 	= [];
+var express 		= require('express');
+var hbs  			= require('express-handlebars');
+var bodyParser 		= require('body-parser')
+var app 			= express();
+var user 			= {};
+user.cart 			= {};
+user.cart.products 	= [];
+user.cart.total 	= 0;
+var products 		= [];
+var shipping 		= [];
+var payment 		= [];
 
+/** WARNING 
+This code is a simplification with no standards, you shlould not use this like an example of how to program in node js. There are many good practices that are not being used on purpose.
+**/
 
 
 /* BASIC CONFIGURATION */
@@ -42,6 +49,18 @@ for(var i = 0; i < 40; i++) {
 	products.push(product);
 }
 
+//set shipping methods
+shipping.push({id: 1, name: 'Pickup in Store', price: 0});
+shipping.push({id: 2, name: 'Deliver Home', price: 5});
+
+//set shipping methods
+payment.push({id: 1, name: 'Visa'});
+payment.push({id: 2, name: 'American Express'});
+
+
+
+
+
 /* ROUTES */
 //add to cart
 app.post('/product/addToCart', function(req, res) {
@@ -49,7 +68,12 @@ app.post('/product/addToCart', function(req, res) {
 	var product = products.filter(function(p) {
 		return p.id== id;
 	})[0];
-	user.cart.push(product);
+	user.cart.products.push(product);
+	var total = 0;
+	for(var i = 0, len = user.cart.products.length; i < len; i++) {
+		total += user.cart.products[i].price;
+	}
+	user.cart.total = total;
 	res.json({added: true});
 })
 
@@ -81,14 +105,54 @@ app.get('/product/:id', function(req, res) {
 
 //shopping cart
 app.get('/cart', function(req, res) {
-	res.render('cart', {products: req.user.cart});
+	res.render('cart', {total: user.cart.total, products: req.user.cart.products});
 })
 
 //shipping
+app.get('/checkout/shipping', function(req, res) {
+	res.render('shipping', {total: user.cart.total, products: req.user.cart.products});
+})
 
 //payment
+app.post('/checkout/payment', function(req, res) {
+	var id = req.body.shipping;
+	var c_shipping = shipping.filter(function(p) {
+		return p.id == id;
+	})[0];
+
+	//calucate cart total
+	user.cart.shipping = c_shipping;
+	var total = 0;
+	for(var i = 0, len = user.cart.products.length; i < len; i++) {
+		total += user.cart.products[i].price;
+	}
+	total += user.cart.shipping.price;
+	user.cart.total = total;
+	res.render('payment', {total: user.cart.total, products: req.user.cart.products, shipping: user.cart.shipping});
+})
 
 //confirmation
+app.post('/checkout/summary', function(req, res) {
+	var id = req.body.shipping;
+	var c_payment = payment.filter(function(p) {
+		return p.id == id;
+	})[0];
+
+	//calucate cart total
+	user.cart.payment = c_payment;
+	var total = 0;
+	for(var i = 0, len = user.cart.products.length; i < len; i++) {
+		total += user.cart.products[i].price;
+	}
+	total += user.cart.shipping.price;
+	user.cart.total = total;
+
+	var purchase = user.cart;
+	user.cart 			= {};
+	user.cart.products 	= [];
+	user.cart.total 	= 0;
+	res.render('summary', {total: purchase.total, products: purchase.products, shipping: purchase.shipping, payment: purchase.payment});
+})
 
 
 
