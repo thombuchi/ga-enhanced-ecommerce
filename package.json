@@ -1,0 +1,16 @@
+{
+  "name": "ecommerce-example",
+  "version": "0.0.1",
+  "description": "An example of a ecommerce website with google analytics enhanced commerce implementation",
+  "author": "Your Name <you.name@example.org>",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "ecommerce",
+    "example",
+    "node",
+    "express"
+  ],
+  "license": "MIT"
+}
