@@ -1,12 +1,68 @@
-<section class="hero is-primary is-medium">
-  <div class="hero-content">
-    <div class="container">
-      <h1 class="title">
-        Medium title
-      </h1>
-      <h2 class="subtitle">
-        Medium subtitle
-      </h2>
-    </div>
-  </div>
+<section class="hero is-info is-large">
+	<div class="hero-content">
+	    <div class="container">
+	      	<h1 class="title">
+	        	Banner 1
+	      	</h1>
+	      	<h2 class="subtitle">
+	        	Banner Info
+	      	</h2>
+	    </div>
+	</div>
+</section>
+
+ <section style="margin-top: 30px;">
+ 	 <div class="container">
+ 	 	<div class="columns">
+		  	<div class="column" style="text-align: center;">
+		  		<div class="notification is-success" style="padding: 80px 0;">
+		  			<h2 class="title is-4">
+		    			Banner 2
+		    		</h2>
+		    		<h3 class="subtitle">Banner Info</h3>
+		    	</div>
+			</div>
+			<div class="column is-text-centered" style="text-align: center;">
+			   	<div class="notification is-danger" style="padding: 80px 0;">
+		  			<h2 class="title is-4">
+		    			Banner 3
+		    		</h2>
+		    		<h3 class="subtitle">Banner Info</h3>
+		    	</div>
+			</div>
+			<div class="column is-text-centered" style="text-align: center;">
+			    <div class="notification is-warning" style="padding: 80px 0;">
+		  			<h2 class="title is-4">
+		    			Banner 2
+		    		</h2>
+		    		<h3 class="subtitle">Banner Info</h3>
+		    	</div>
+			</div>
+		</div>
+ 	 </div>
+ </section>
+
+ <section style="margin-top: 30px;">
+ 	 <div class="container">
+ 	 	<div class="columns">
+ 	 		{{#each products}}
+	 	 		<div class="card column" style="margin: 10px;">
+	 	 			<a href="/product/{{this.id}}">
+				  	<figure class="card-image is-4x3">
+				    	<img src="http://placehold.it/600x450" alt="">
+				  	</figure>
+				  	<div class="card-content">
+				      	<div class="media-content">
+				        	<p class="title is-4" style="text-align: center;">{{this.name}}</p>
+				      	</div>
+				    </div>
+
+				    <div class="content is-text-centered">
+				   		<p class="title is-5" style="text-align: center; color: red;">$ {{this.price}}</p>
+				    </div>
+				    <a/>
+				</div>
+			{{/each}}
+		</div>
+	</div>
 </section>

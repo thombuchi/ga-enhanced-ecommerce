@@ -1,0 +1,39 @@
+<section class="hero is-success is-small">
+	<div class="hero-content">
+	    <div class="container">
+	      	<h1 class="title">
+	        	Category {{category.id}}
+	      	</h1>
+	      	<h2 class="subtitle">
+	        	Category Info
+	      	</h2>
+	    </div>
+	</div>
+</section>
+
+<section style="margin-top: 30px;">
+ 	 <div class="container">
+ 	 	<div class="columns is-multiline">
+ 	 		{{#each products}}
+	 	 		<div class="column is-4" style="padding: 10px;">
+		 	 		<div class="card" style="padding-bottom: 20px;">
+		 	 			<a href="/product/{{this.id}}">
+					  	<figure class="card-image is-4x3">
+					    	<img src="http://placehold.it/600x450" alt="">
+					  	</figure>
+					  	<div class="card-content">
+					      	<div class="media-content">
+					        	<p class="title is-4" style="text-align: center;">{{this.name}}</p>
+					      	</div>
+					    </div>
+
+					    <div class="content is-text-centered">
+					   		<p class="title is-4" style="text-align: center; color: red;">$ {{this.price}}</p>
+					    </div>
+					    <a/>
+					</div>
+				</div>
+			{{/each}}
+		</div>
+	</div>
+</section>

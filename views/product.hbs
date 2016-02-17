@@ -1,0 +1,22 @@
+<section class="columns">
+	<div class="column is-5 is-square">
+		<img src="http://placehold.it/960x960" alt="">
+	</div>
+	<div class="content column id-7">
+		<h1 class="title">{{product.name}}</h1>
+		<p class="title is-3" style="color: red;">$ {{product.price}}</p>
+		<button id="add" target="{{product.id}}" class="button" style="width: 100%; margin: 10px;">Add To Bag</button>
+		<button id="buy" class="button is-danger" style="width: 100%; margin: 10px;">Buy</button>
+	</div>
+</section>
+
+<script>
+	$(document).ready(function(){
+		$('#add').click(function() {
+			var id = $('#add').attr('target');
+			$.post('/product/addToCart', {id: id}).done(function(response){
+				console.log(response);
+			})
+		})
+	})
+</script>

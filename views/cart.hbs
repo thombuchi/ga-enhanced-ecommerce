@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <th>Total</th>
+      <th>$</th>
+    </tr>
+  </tfoot>
+  <tbody>
+    {{#each products}}
+    <tr>
+      <td>{{this.name}}</td>
+      <td>$ {{this.price}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
