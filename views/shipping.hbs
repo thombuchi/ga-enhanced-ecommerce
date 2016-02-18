@@ -5,8 +5,8 @@
 <p class="control" style="text-align:center;">
     <span class="select">
         <select name="shipping">
-            <option value="1">Pickup In Store ($0)</option>
-            <option value="2">Ship to Address ($5)</option>
+            <option value="1" target="Pickup In Store">Pickup In Store ($0)</option>
+            <option value="2" target="Ship To Address">Ship to Address ($5)</option>
         </select>
     </span>
 </p>
@@ -34,6 +34,34 @@
     {{/each}}
   </tbody>
 </table>
-<button type="submit" class="button is-danger">To Payment</button>
+  <a id="submit" class="button is-danger">To Payment</a>
 	</div>
 </form>
+
+<script>
+{{#each products}}
+ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+  'id': '{{this.id}}',                   // Product ID (string).
+  'name': '{{this.name}}', // Product name (string).
+  'category': '{{this.category2}}',            // Product category (string).
+  'brand': '{{this.brand}}',                // Product brand (string).
+  'variant': '',               // Product variant (string).
+  'price': '{{this.price}}',                 // Product price (currency).
+  'quantity': 1                     // Product quantity (number).
+});
+{{/each}}
+ga('ec:setAction','checkout', {
+    'step': 1
+});
+
+$('#submit').click(function(e) {
+  var option = $('select[name="shipping"]').find(":selected").attr('target');
+  ga('ec:setAction', 'checkout_option', {'step': 1, 'option': option});
+
+ga('send', 'event', 'Checkout', 'Option', {
+    hitCallback: function() {
+      $('form').submit();
+    }
+});
+});
+</script>

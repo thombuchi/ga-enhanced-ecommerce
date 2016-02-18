@@ -11,11 +11,31 @@
 </section>
 
 <script>
+
+	ga('ec:addProduct', {                 // Provide product details in an productFieldObject.
+	  'id': '{{product.id}}',                     // Product ID (string).
+	  'name': '{{product.name}}',  // Product name (string).
+	  'category': '{{product.category2}}',     // Product category (string).
+	  'brand': '{{product.brand}}',                 // Product brand (string).
+	  'variant': '',                  // Product variant (string).
+	});
+
+	ga('ec:setAction', 'detail');
+
 	$(document).ready(function(){
 		$('#add').click(function(e) {
 			var id = $(e.target).attr('target');
 			$.post('/product/addToCart', {id: id}).done(function(response){
 				if(response.added){
+					ga('ec:addProduct', {                 // Provide product details in an productFieldObject.
+					  'id': '{{product.id}}',                     // Product ID (string).
+					  'name': '{{product.name}}',  // Product name (string).
+					  'category': '{{product.category2}}',     // Product category (string).
+					  'brand': '{{product.brand}}',                 // Product brand (string).
+					  'variant': '',                  // Product variant (string).
+					});
+					ga('ec:setAction', 'add');
+					ga('send', 'event', 'Enhanced Commerce', 'Add To Cart', '{{product.id}}');
 					alert('Product Added.');
 				}
 			})
@@ -24,7 +44,20 @@
 			var id = $(e.target).attr('target');
 			$.post('/product/addToCart', {id: id}).done(function(response){
 				if(response.added){
-					document.location = '/cart';
+					ga('ec:addProduct', {                 // Provide product details in an productFieldObject.
+					  'id': '{{product.id}}',                     // Product ID (string).
+					  'name': '{{product.name}}',  // Product name (string).
+					  'category': '{{product.category2}}',     // Product category (string).
+					  'brand': '{{product.brand}}',                 // Product brand (string).
+					  'variant': '',                  // Product variant (string).
+					});
+					ga('ec:setAction', 'add');
+					ga('send', 'event', 'Enhanced Commerce', 'Add To Cart', '{{product.id}}', {
+						hitCallback: function() {
+					      document.location = '/cart';
+					    }
+					});
+					
 				}
 			})
 		});

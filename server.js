@@ -165,7 +165,7 @@ app.post('/checkout/payment', function(req, res) {
 
 //confirmation
 app.post('/checkout/summary', function(req, res) {
-	var id = req.body.shipping;
+	var id = req.body.payment;
 	var c_payment = payment.filter(function(p) {
 		return p.id == id;
 	})[0];

@@ -11,13 +11,17 @@
 	</div>
 </section>
 
+<script>
+var ga_products = [];
+</script>
+
 <section style="margin-top: 30px;">
  	 <div class="container">
  	 	<div class="columns is-multiline">
  	 		{{#each products}}
 	 	 		<div class="column is-4" style="padding: 10px;">
 		 	 		<div class="card" style="padding-bottom: 20px;">
-		 	 			<a href="/product/{{this.id}}">
+		 	 			<a href="/product/{{this.id}}" ga-type="product" ga-product-id="{{this.id}}">
 					  	<figure class="card-image is-4x3">
 					    	<img src="http://placehold.it/600x450" alt="">
 					  	</figure>
@@ -33,7 +37,59 @@
 					    <a/>
 					</div>
 				</div>
+				<script>
+				ga_products.push({            // Provide product details in an impressionFieldObject.
+				  'id': '{{this.id}}',                   // Product ID (string).
+				  'name': '{{this.name}}', // Product name (string).
+				  'category': '{{this.category2}}',   // Product category (string).
+				  'brand': '{{this.brand}}',                // Product brand (string).
+				  'variant': '',               // Product variant (string).
+				  'list': 'Category {{../category.id}}',       // Product list (string).
+				  'position': {{@index}}                     // Product position (number).
+				});
+				</script>
 			{{/each}}
 		</div>
 	</div>
 </section>
+
+
+<script>
+
+function clone(obj) {
+       var target = {};
+       for (var i in obj) {
+        if (obj.hasOwnProperty(i)) {
+         target[i] = obj[i];
+        }
+       }
+       return target;
+      }
+
+for(var i = 0, len = ga_products.length; i < len; i++) {
+ga('ec:addImpression', ga_products[i]);
+}
+
+$("a[ga-type='product']").click(function(e) {
+
+	e.preventDefault();
+	if($(e.target).attr('ga-type') == undefined)
+		var element = $(e.target).closest('a');
+	else 
+		var element = $(e.target);
+	var aux = element.attr('ga-product-id');
+
+	var p = clone(ga_products.filter(function(o) {
+		return o.id == aux;
+	})[0]);
+
+	var list = p.list;
+	delete p.list;
+
+	ga('ec:addProduct', p);
+	ga('ec:setAction', 'click', {'list': list});
+	ga('send', 'event', 'Enhanced Commerce', 'Product Click', element.attr('ga-promo-name'),0, {'hitCallback': function(){
+		document.location = element.attr('href');
+	}});
+});
+</script>

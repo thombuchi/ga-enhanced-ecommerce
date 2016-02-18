@@ -4,9 +4,9 @@
 		<h3 class="title is-3">Payment Method</h3>
 <p class="control" style="text-align:center;">
     <span class="select">
-        <select name="shipping">
-            <option value="1">Visa</option>
-            <option value="2">American Express</option>
+        <select name="payment">
+            <option value="1" target="Visa">Visa</option>
+            <option value="2" target="American Express">American Express</option>
         </select>
     </span>
 </p>
@@ -38,6 +38,34 @@
     </tr>
   </tbody>
 </table>
-<button type="submit" class="button is-danger">Confirm and Pay</button>
+<a id="submit" class="button is-danger">Confirm and Pay</a>
 	</div>
 </form>
+
+<script>
+{{#each products}}
+ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+  'id': '{{this.id}}',                   // Product ID (string).
+  'name': '{{this.name}}', // Product name (string).
+  'category': '{{this.category2}}',            // Product category (string).
+  'brand': '{{this.brand}}',                // Product brand (string).
+  'variant': '',               // Product variant (string).
+  'price': '{{this.price}}',                 // Product price (currency).
+  'quantity': 1                     // Product quantity (number).
+});
+{{/each}}
+ga('ec:setAction','checkout', {
+    'step': 2
+});
+
+$('#submit').click(function(e) {
+  var option = $('select[name="payment"]').find(":selected").attr('target');
+  ga('ec:setAction', 'checkout_option', {'step': 2, 'option': option});
+
+ga('send', 'event', 'Checkout', 'Option', {
+    hitCallback: function() {
+      $('form').submit();
+    }
+});
+});
+</script>
